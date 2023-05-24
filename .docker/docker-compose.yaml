@@ -1,0 +1,58 @@
+version: '3.4'
+
+services:
+  postgres:
+        image: postgres:13-alpine
+        restart: always
+        container_name: postgres
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=dev
+          - POSTGRES_DB=heimdb
+        ports:
+          - '5432:5432'
+        volumes: 
+          - ./PostgreSQL/data:/var/lib/postgresql/data
+
+  apigateway:
+    image: polyway
+    build:
+      context: .
+      dockerfile: ./gatewayDockerfile
+    ports:
+      - "8000:8000"
+
+  grafana:
+    image: grafana/grafana:latest 
+    container_name: grafana 
+    ports:
+      - "4040:4040"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_AUTH_BASIC_ENABLED=false 
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    networks:
+      - monitoring
+    restart: unless-stopped
+  
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    command: --config.file=/etc/prometheus/prometheus.yaml
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring 
+    restart: unless-stopped
+
+networks:
+  monitoring:
+
+volumes:
+  grafana_data:
+  prometheus_data:
