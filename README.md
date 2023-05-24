@@ -34,7 +34,13 @@ The lack of secure property rights in India is a significant problem, particular
 
 To run this project, you will need to add the following environment variables to your `.env` file
 
-- `PORT`=`"8004"`
+`API_GATEWAY_PORT`=`"8000"`
+`STORAGE_SERVICE_PORT`=`"8001"`
+`AUTH_SERVICE_PORT`=`"8002"`
+`DOCUMENT_SERVICE_PORT`=`"8003"`
+`OCR_SERVICE_PORT`=`"8004"`
+
+
 
 DATABASE CONFIGURATIONS
 
