@@ -1,0 +1,8 @@
+global:
+  scrape_interval: "5s"
+  scrape_timeout: "30s"
+  # evaluation_interval: "1m"
+scrape_configs:
+  - job_name: 'polyway_gateway_monitoring'
+    static_configs:
+      - targets: ['localhost:3000', 'localhost:8000', 'localhost:8001' ,'localhost:8002' ,'localhost:8003' ,'localhost:8004']

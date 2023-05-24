@@ -5,11 +5,44 @@ The lack of secure property rights in India is a significant problem, particular
 
 
 
+## ⚒️ Tech Stack
 
-
+- `Go`
+- `GoFiber` 
+- `Consul` - Service Discovery
+- `Prometheus` - Monitoring and Alerting
+- `Grafana` - Metric Visualization
+- `Jaeger` - E2E distributed Tracing for our microservices.
 
 ## Architecture
 ![PolyrootArch](https://github.com/The-Origin-Labs/landate/assets/43869046/a49dcf41-be07-40c2-a02f-d011010def2d)
+
+## App features
+
+### 👌Features
+
+- 
+- 
+- 
+### ⚡Performance
+
+- 
+- 
+-
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your `.env` file
+
+- `PORT`=`"8004"`
+
+DATABASE CONFIGURATIONS
+
+- `DB_HOST`=`localhost`
+- `DB_PORT`=`5432`
+- `DB_USER`=`postgres`
+- `DB_PASSWORD`=`<heimdalkeptsecret>`
+- `DB_NAME`=`heimdb`
 
 
 ## Author
