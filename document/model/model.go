@@ -8,10 +8,10 @@ import (
 
 type UserDocument struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty"`
-	TransactionID string             `bson:"transactionId"`
+	TransactionID string             `bson:"txid"`
 	DocumentFile  string             `bson:"documentfile"`
 	Name          string             `bson:"name"`
 	Phone         string             `bson:"phone"`
-	WalletAddress string             `bson:"walletAddress"`
+	WalletAddress string             `bson:"wallet_address"`
 	CreatedDate   time.Time          `bson:"created_date"`
 }

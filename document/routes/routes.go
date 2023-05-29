@@ -4,17 +4,25 @@ import (
 	"encoding/json"
 
 	"github.com/The-Origin-Labs/landate/config"
+	handler "github.com/The-Origin-Labs/landate/document/handler"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func documentRoutes(route *fiber.App) {
-
-	route.Get("/", func(c *fiber.Ctx) error {
+	route.Get("/", handler.Init)
+	api := route.Group("/api/user", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{
-			"message": "Welcome to Docuement Microserice ⚡",
+			"message": "api/user",
 		})
 	})
+	api.Post("/new", handler.AddUserDocs)
+	api.Get("/:id", handler.GetUserDocsById)
+	api.Patch("/update/:id", handler.UpdateUserDocs)
+	api.Delete("/:id", handler.RemoveUserDocs)
+	api.Post("/txid", handler.GetUserDocsByTxId)
+	api.Post("/walletaddr", handler.GetUserDocsByWalletAddress)
 }
 
 func Init() error {
