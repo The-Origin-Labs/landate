@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-
 	database "github.com/The-Origin-Labs/landate/storage/database"
 	models "github.com/The-Origin-Labs/landate/storage/models"
 
@@ -52,29 +51,43 @@ func GetAllProperties(ctx *fiber.Ctx) error {
 // DESP: Get property and owner details.
 // METHOD: GET
 func GetProperty(ctx *fiber.Ctx) error {
-	property := []models.Property{}
+	property := models.Property{}
 
-	prop := new(models.Property)
-	if err := ctx.BodyParser(prop); err != nil {
-		return ctx.Status(http.StatusBadRequest).JSON(err.Error())
+	propertyID := ctx.Params("id")
+
+	if err := database.DB.Where("id = ?", propertyID).First(&property).Error; err != nil {
+		return ctx.Status(http.StatusInternalServerError).JSON(fiber.Map{
+					"error": err.Error(),
+					"message" : "Property not found",
+				})
 	}
 
-	database.DB.Where("property_owner = ?",
-		prop.PropertyOwner).Find(&property)
 	return ctx.Status(http.StatusOK).JSON(property)
 }
 
 // DESP: Delete property and owner details.
 // METHOD: DELETE
 func DeleteProperty(ctx *fiber.Ctx) error {
-	property := []models.Property{}
+	property := models.Property{}
 
-	prop := new(models.Property)
-	if err := ctx.BodyParser(prop); err != nil {
-		return ctx.Status(http.StatusBadRequest).JSON(err.Error())
+	propID := ctx.Params("id") // Assuming the ID is passed as a route parameter
+
+	// Query the database to find the property by ID
+	result := database.DB.Where("id = ?", propID).First(&property)
+	if result.Error != nil {
+		// Property not found
+		// Other database error
+		return ctx.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"error": result.Error.Error(),
+			"message": "Property not found",
+		})
 	}
 
-	database.DB.Where("property_owner = ?",
-		prop.PropertyOwner).Delete(&property)
-	return ctx.Status(http.StatusOK).JSON(property)
+	// Delete the property from the database
+	if err := database.DB.Delete(&property).Error; err != nil {
+		// Handle the delete error
+		return ctx.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return ctx.Status(http.StatusOK).JSON(fiber.Map{"message": "Property deleted successfully"})
 }
