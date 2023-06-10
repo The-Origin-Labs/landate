@@ -12,8 +12,9 @@ import (
 
 func documentRoutes(route *fiber.App) {
 	route.Get("/", handler.Init)
-	api := route.Group("/api/user", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
+	api := route.Group("/api/user")
+	api.Get("/", func(ctx *fiber.Ctx) error {
+		return ctx.JSON(fiber.Map{
 			"message": "api/user",
 		})
 	})
