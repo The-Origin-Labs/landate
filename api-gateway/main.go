@@ -10,5 +10,5 @@ func main() {
 	// service.ServiceDicovery()
 	// service.ServiceRegistry()
 
-	api.Gatway()
+	api.Gateway()
 }

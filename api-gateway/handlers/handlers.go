@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"log"
+	"strings"
 
 	v1Handlers "github.com/The-Origin-Labs/landate/api-gateway/handlers/versions"
 	route "github.com/The-Origin-Labs/landate/api-gateway/routes"
@@ -10,14 +11,15 @@ import (
 	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/proxy"
 )
 
-func Gatway() {
+func Gateway() {
 
 	router := fiber.New()
 
 	router.Use(logger.New(logger.Config{
-		Format: `${pid} ${locals:requestid} ${status} - ${method} ${path}\n`,
+		Format: `\n${pid} ${locals:requestid} ${status} - ${method} ${path}`,
 	}))
 
 	router.Get("/", func(ctx *fiber.Ctx) error {
@@ -34,6 +36,13 @@ func Gatway() {
 			"uri":  c.Request().URI().String(),
 			"port": "env",
 		})
+	})
+
+	// connecting storage micro-service
+	router.All("/storage/*", func(c *fiber.Ctx) error {
+		path := strings.Split(c.Path(), "/storage")[1]
+		storageURL := "http://localhost:" + config.GetEnvConfig("STORAGE_SERVICE_PORT")
+		return proxy.Do(c, storageURL+path)
 	})
 
 	v1 := router.Group("/v1")

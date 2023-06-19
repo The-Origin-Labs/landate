@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/ansrivas/fiberprometheus/v2 v2.6.0
+	github.com/aws/aws-sdk-go v1.44.280
 	github.com/gofiber/fiber/v2 v2.46.0
 	github.com/hashicorp/consul/api v1.20.0
 	github.com/joho/godotenv v1.5.1
@@ -34,6 +35,7 @@ require (
 	github.com/jackc/pgx/v5 v5.3.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.16.3 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect

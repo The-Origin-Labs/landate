@@ -38,7 +38,7 @@ func StorageService() {
 	// Define a route for the root path to return a simple JSON response.
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.JSON(fiber.Map{
-			"message": "Welcome to Heimdal API Service.",
+			"message": "Welcome to Heimdal: Storage Microservice.",
 		})
 	})
 
