@@ -9,7 +9,7 @@ import (
 type UserDocument struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty"`
 	TransactionID string             `bson:"transactionid"`
-	DocumentFile  string             `bson:"documentfile"`
+	DocumentFile  []byte             `bson:"documentfile"`
 	Name          string             `bson:"name"`
 	Phone         string             `bson:"phone"`
 	WalletAddress string             `bson:"walletaddress"`
