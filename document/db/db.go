@@ -14,7 +14,6 @@ import (
 /*
 MongoDBClientConnection initializes and establishes
 a connection to the MongoDB database.
-
 @return {*mongo.Client} - The connected MongoDB client.
 */
 func mongoDBClientConnection() *mongo.Client {
