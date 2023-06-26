@@ -1,9 +1,9 @@
 package main
 
 import (
-	apigateway_svc "github.com/The-Origin-Labs/landate/api-gateway"
-	document_svc "github.com/The-Origin-Labs/landate/document"
-	storage_svc "github.com/The-Origin-Labs/landate/storage"
+	apigateway_svc "landate/api-gateway"
+	document_svc "landate/document"
+	storage_svc "landate/storage"
 )
 
 func main() {

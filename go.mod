@@ -1,4 +1,4 @@
-module github.com/The-Origin-Labs/landate
+module landate
 
 go 1.20
 

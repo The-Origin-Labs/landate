@@ -1,13 +1,13 @@
 package apigateway
 
 import (
-	// service "github.com/The-Origin-Labs/landate/api-gateway/discovery"
+	// service "landate/api-gateway/discovery"
 	"log"
 	"strconv"
 
-	api "github.com/The-Origin-Labs/landate/api-gateway/handlers"
-	config "github.com/The-Origin-Labs/landate/config"
-	consul "github.com/The-Origin-Labs/landate/consul"
+	api "landate/api-gateway/handlers"
+	config "landate/config"
+	consul "landate/consul"
 )
 
 const (

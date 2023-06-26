@@ -3,11 +3,11 @@ package handler
 import (
 	"context"
 
-	db "github.com/The-Origin-Labs/landate/document/db"
-	model "github.com/The-Origin-Labs/landate/document/model"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	db "landate/document/db"
+	model "landate/document/model"
 )
 
 func Init(c *fiber.Ctx) error {

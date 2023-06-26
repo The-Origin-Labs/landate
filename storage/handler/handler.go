@@ -1,9 +1,9 @@
 package handler
 
 import (
+	database "landate/storage/database"
+	models "landate/storage/models"
 	"net/http"
-	database "github.com/The-Origin-Labs/landate/storage/database"
-	models "github.com/The-Origin-Labs/landate/storage/models"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -57,9 +57,9 @@ func GetProperty(ctx *fiber.Ctx) error {
 
 	if err := database.DB.Where("id = ?", propertyID).First(&property).Error; err != nil {
 		return ctx.Status(http.StatusInternalServerError).JSON(fiber.Map{
-					"error": err.Error(),
-					"message" : "Property not found",
-				})
+			"error":   err.Error(),
+			"message": "Property not found",
+		})
 	}
 
 	return ctx.Status(http.StatusOK).JSON(property)
@@ -78,7 +78,7 @@ func DeleteProperty(ctx *fiber.Ctx) error {
 		// Property not found
 		// Other database error
 		return ctx.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"error": result.Error.Error(),
+			"error":   result.Error.Error(),
 			"message": "Property not found",
 		})
 	}

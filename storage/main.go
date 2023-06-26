@@ -4,11 +4,11 @@ import (
 	"log"
 	"strconv"
 
-	config "github.com/The-Origin-Labs/landate/config"
-	consul "github.com/The-Origin-Labs/landate/consul"
+	config "landate/config"
+	consul "landate/consul"
 
-	database "github.com/The-Origin-Labs/landate/storage/database"
-	api "github.com/The-Origin-Labs/landate/storage/routes"
+	database "landate/storage/database"
+	api "landate/storage/routes"
 )
 
 const (

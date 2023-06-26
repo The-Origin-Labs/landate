@@ -3,8 +3,8 @@ package routes
 import (
 	"encoding/json"
 
-	"github.com/The-Origin-Labs/landate/config"
-	handler "github.com/The-Origin-Labs/landate/document/handler"
+	"landate/config"
+	handler "landate/document/handler"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"

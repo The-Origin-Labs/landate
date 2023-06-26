@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"log"
 
-	config "github.com/The-Origin-Labs/landate/config"
-	handler "github.com/The-Origin-Labs/landate/storage/handler"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
+	config "landate/config"
+	handler "landate/storage/handler"
 )
 
 func StorageService() {

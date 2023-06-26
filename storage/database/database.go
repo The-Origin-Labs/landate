@@ -5,8 +5,8 @@ import (
 	"log"
 	"strconv"
 
-	config "github.com/The-Origin-Labs/landate/config"
-	models "github.com/The-Origin-Labs/landate/storage/models"
+	config "landate/config"
+	models "landate/storage/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

@@ -5,10 +5,10 @@ import (
 	"log"
 	"strconv"
 
-	// db "github.com/The-Origin-Labs/landate/document/db"
-	config "github.com/The-Origin-Labs/landate/config"
-	consul "github.com/The-Origin-Labs/landate/consul"
-	api "github.com/The-Origin-Labs/landate/document/routes"
+	// db "landate/document/db"
+	config "landate/config"
+	consul "landate/consul"
+	api "landate/document/routes"
 )
 
 const (

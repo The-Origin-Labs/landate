@@ -4,9 +4,9 @@ import (
 	"log"
 	"strings"
 
-	v1Handlers "github.com/The-Origin-Labs/landate/api-gateway/handlers/versions"
-	route "github.com/The-Origin-Labs/landate/api-gateway/routes"
-	config "github.com/The-Origin-Labs/landate/config"
+	v1Handlers "landate/api-gateway/handlers/versions"
+	route "landate/api-gateway/routes"
+	config "landate/config"
 
 	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"

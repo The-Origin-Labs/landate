@@ -5,10 +5,10 @@ import (
 	"log"
 	"time"
 
-	config "github.com/The-Origin-Labs/landate/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/net/context"
+	config "landate/config"
 )
 
 /*
