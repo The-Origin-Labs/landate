@@ -12,7 +12,4 @@ func Routes(app *fiber.App) {
 		return c.SendString("Api running...")
 	})
 
-	api.Get("/mv2", func(c *fiber.Ctx) error {
-		return c.SendString("Api virunning...")
-	})
 }

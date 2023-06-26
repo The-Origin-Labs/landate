@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	v1Handlers "landate/api-gateway/handlers/versions"
+	"landate/api-gateway/middlewares"
 	route "landate/api-gateway/routes"
 	config "landate/config"
 
@@ -17,6 +18,9 @@ import (
 func Gateway() {
 
 	router := fiber.New()
+
+	// API Authorization Middleware
+	router.Use(middlewares.ValidateAPIKey)
 
 	router.Use(logger.New(logger.Config{
 		Format: `${pid} ${locals:requestid} ${status} - ${method} ${path} /n`,
@@ -43,6 +47,13 @@ func Gateway() {
 		path := strings.Split(c.Path(), "/storage")[1]
 		storageURL := "http://localhost:" + config.GetEnvConfig("STORAGE_SERVICE_PORT")
 		return proxy.Do(c, storageURL+path)
+	})
+
+	// connecting document microservice
+	router.All("/document/*", func(c *fiber.Ctx) error {
+		path := strings.Split(c.Path(), "/document")[1]
+		docURL := "http://localhost:" + config.GetEnvConfig("DOCUMENT_SERVICE_PORT")
+		return proxy.Do(c, docURL+path)
 	})
 
 	v1 := router.Group("/v1")
