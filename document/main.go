@@ -1,4 +1,4 @@
-package main
+package document
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ const (
 	svcTag  = "doc_svc"
 )
 
-func main() {
+func DocumentSVC() {
 
 	svc_port, err := strconv.Atoi(config.GetEnvConfig(envPORT))
 	if err != nil {

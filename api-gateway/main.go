@@ -1,4 +1,4 @@
-package main
+package apigateway
 
 import (
 	// service "github.com/The-Origin-Labs/landate/api-gateway/discovery"
@@ -17,7 +17,7 @@ const (
 	svcTag  = "api-gateway"
 )
 
-func main() {
+func ApiGatewaySVC() {
 	// Register Service
 	svc_port, err := strconv.Atoi(config.GetEnvConfig(envPORT))
 	if err != nil {

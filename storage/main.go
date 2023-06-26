@@ -1,4 +1,4 @@
-package main
+package storage
 
 import (
 	"log"
@@ -18,7 +18,7 @@ const (
 	svcTag  = "storage"
 )
 
-func main() {
+func StorageSVC() {
 	// Database connection
 	database.DBConnect()
 
