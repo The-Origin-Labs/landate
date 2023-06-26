@@ -12,6 +12,7 @@ import (
 	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
 )
 
@@ -19,6 +20,11 @@ func Gateway() {
 
 	router := fiber.New()
 
+	router.Get("/monitor", monitor.New(
+		monitor.Config{
+			Title: "Landate Monitoring",
+		},
+	))
 	// API Authorization Middleware
 	router.Use(middlewares.ValidateAPIKey)
 
