@@ -16,7 +16,6 @@ The lack of secure property rights in India is a significant problem, particular
 - `Prometheus` - Monitoring and Alerting
 - `Grafana` - Metric Visualization
 - `Jaeger` - E2E distributed Tracing for our microservices.
-
 - Check the 👉 [Api Documenation](https://landate-api.apidog.io/)
 
 > _client side for the application is present in 
@@ -24,21 +23,18 @@ The lack of secure property rights in India is a significant problem, particular
     [website](https://landate.vercel.app/)_
 
 ## Architecture
-![PolyrootArch](https://landate/assets/43869046/a49dcf41-be07-40c2-a02f-d011010def2d)
+![PolyrootArch](./assets/architecture.png)
 
 ## App features
 
 
 ### 👌Features
 
-- 
-- 
-- 
-### ⚡Performance
+- Transaction monitoring between services
+- Service dependency Analysis
+- Service Discovery and Failure Monitoring
+### ⚡ Performance
 
-- 
-- 
--
 
 ## Environment Variables
 
@@ -60,6 +56,14 @@ DATABASE CONFIGURATIONS
 - `DB_PASSWORD`=`<heimdalkeptsecret>`
 - `DB_NAME`=`heimdb`
 
+## Setting dev environment
+
+> _Note: The Application endpoint may not be accessible due to authorization restriction._
+
+```shell
+go mod download
+go run main.go
+```
 
 ## Author
 [Siddhant Prateek](https://github.com/siddhantprateek)
