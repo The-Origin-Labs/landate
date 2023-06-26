@@ -1,0 +1,22 @@
+{
+    "services" : [
+        {
+            "id" : "apigateway-id",
+            "name": "apigateway-service",
+            "port": 8000,
+            "check": {
+                "http": "http://localhost:8000/",
+                "interval": "10s"
+            }
+        },
+        {
+            "id" : "storage-svc-id",
+            "name": "storage-service",
+            "port": 8001,
+            "check": {
+                "http": "http://localhost:8001/",
+                "interval": "10s"
+            }
+        }
+    ]
+}
