@@ -19,7 +19,7 @@ func Gateway() {
 	router := fiber.New()
 
 	router.Use(logger.New(logger.Config{
-		Format: `\n${pid} ${locals:requestid} ${status} - ${method} ${path}`,
+		Format: `${pid} ${locals:requestid} ${status} - ${method} ${path} /n`,
 	}))
 
 	router.Get("/", func(ctx *fiber.Ctx) error {
