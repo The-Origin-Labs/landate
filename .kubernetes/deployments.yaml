@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api_gateway
+spec:
+  selector:
+    matchLabels:
+      app: api_gateway
+  template:
+    metadata:
+      labels:
+        app: api_gateway
+    spec:
+      containers:
+      - name: api_gateway
+        image: go-app-win:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
