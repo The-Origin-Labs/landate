@@ -1,5 +1,7 @@
-package main
+package authentication
 
-func main() {
+// This Service contain User Authentication information
+// and Its Profile Information
+func AuthSVC() {
 
 }
