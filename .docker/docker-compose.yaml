@@ -70,10 +70,30 @@ services:
       - ME_CONFIG_MONGODB_URL:mongodb://root:root@mongo:27017/
       
   consul:
-    image: consul:latest
+    container_name: consul-badger
+    image: hashicorp/consul:latest
+    restart: always
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    networks:
+      - consul
+    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+
+  rabbitmq:
+    container_name: rabbitmq 
+    image: rabbitmq:3-management
+    hostname: my-rabbit
+    ports:
+      - 15672:15672
+      - 5672:5672
+
 
 networks:
   monitoring:
+  consul:
+    driver: bridge
 
 volumes:
   grafana_data:
