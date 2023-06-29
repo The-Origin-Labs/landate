@@ -16,6 +16,7 @@ The lack of secure property rights in India is a significant problem, particular
 - `Prometheus` - Monitoring and Alerting
 - `Grafana` - Metric Visualization
 - `Jaeger` - E2E distributed Tracing for our microservices.
+- `RabbitMQ` - Message Broker _Integration Under Process_
 - Check the 👉 [Api Documenation](https://landate-api.apidog.io/)
 
 > _client side for the application is present in 
@@ -63,6 +64,16 @@ DATABASE CONFIGURATIONS
 ```shell
 go mod download
 go run main.go
+```
+
+### Setting Up a RabbitMQ (Message Broker) Instance Locally
+
+This command starts a RabbitMQ container named "rabbitmq" with the hostname "my-rabbit". The container's management interface is accessible on port 15672 of the host machine, while the AMQP port is accessible on port 5672.
+
+```shell
+docker run -d --hostname my-rabbit --name rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:3-management
+# or
+docker-compose up rabbitmq
 ```
 
 ### Setting Nginx Deployment
