@@ -56,7 +56,7 @@ DATABASE CONFIGURATIONS
 - `DB_PASSWORD`=`<heimdalkeptsecret>`
 - `DB_NAME`=`heimdb`
 
-## Setting dev environment
+## Setting up development environment
 
 > _Note: The Application endpoint may not be accessible due to authorization restriction._
 
@@ -64,6 +64,73 @@ DATABASE CONFIGURATIONS
 go mod download
 go run main.go
 ```
+
+### Setting Nginx Deployment
+
+**Create a new nginx deployment**:
+- Make sure that you have Minikube installed on your system. If you already have Docker installed, you can use Minikube directly from Docker. Otherwise, you can refer to the official documentation website's Minikube guide for instructions on how to set it up.
+
+```shell
+minikube start # To start minikube cluster
+```
+
+```shell
+cd .kubernetes 
+# To apply Nginx deployment. --replicas=3
+kubectl apply -f nginx-deployment.yaml 
+```
+
+**To Create Stateful MongoDB**
+
+- To achieve a stateful MongoDB deployment, you can utilize a StatefulSet in Kubernetes. With this approach, each replica of MongoDB will be associated with its dedicated persistent volume. Additionally, to optimize query performance, each of these pods will be indexed.
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+spec:
+  selector:
+    matchLabels:
+      app: mongodb
+  serviceName: mongodb
+  replicas: 3 # <--- No. of replicas
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        .
+        .
+        .
+        .
+    volumeClaimTemplates:
+    - metadata:
+        # 👇 Persistent Volume Claim for each pod
+        name: mongodb-persistent-data 
+      spec:
+        .
+        .
+        .
+```
+
+**Create MongoDB Service**
+
+```shell
+# To mongodb service
+kubectl apply -f mongodb-svc.yaml 
+```
+
+This will create a service named `mongodb` that will be responsible for exposing the MongoDB deployment to other pods within the cluster.
+
+**MongoDB StatefulSet**
+
+```shell
+# To Create MongoDB statefulset in K8s
+kubectl apply -f mongo-statefulset.yaml 
+```
+This will create a statefulset named `mongodb` with 3 replicas. Each replica will have a dedicated persistent volume for storing MongoDB data. The statefulset will use the service named `mongodb` to provide connectivity to the MongoDB pods.
+
+---
 
 ## Author
 [Siddhant Prateek](https://github.com/siddhantprateek)
