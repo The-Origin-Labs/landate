@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: landateconfigv1.0
+    namespace: default
+data:
+    API_ACCESS_KEY: ""
+    API_GATEWAY_PORT: "8000"
+    STORAGE_SERVICE_PORT: "8001"
+    AUTH_SERVICE_PORT: "8002"
+    DOCUMENT_SERVICE_PORT: "8003"
+    OCR_SERVICE_PORT: "8004"
+    SNS_SERVICE_PORT: "8005"
+    BLOCKCHAIN_SERVICE_PORT: "8009"
+    MONGO_URI: "mongodb://localhost:27017"
+    AWS_BUCKET: ""
+    AWS_KEY: ""
+    AWS_TIMEOUT: ""
+    DB_HOST: localhost
+    DB_PORT: 5432
+    DB_USER: postgres
+    DB_PASSWORD: dev
+    DB_NAME: heimdb

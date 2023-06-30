@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: landate
+  namespace: default
+  labels:
+    app: landate
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: landate
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: landate
+        tier: backend
+    spec:
+      container:
+        - name: <landate-container-name>
+          image: <landate-image>
+          ports:
+          - containerPort: 8000
+          envFrom:
+          - configMapRef:
+              name: landateconfigv1.0
+          resources:
+            request:
+              memory: 
+              cpu:  
+            limits:
+              memory:
+              
+
