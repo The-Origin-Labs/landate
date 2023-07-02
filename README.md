@@ -59,6 +59,14 @@ DATABASE CONFIGURATIONS
 
 ## Setting up development environment
 
+**To Start all the Container Services**
+- Make sure that you have Terraform installed.
+```shell
+cd .terraform
+terraform init && terraform apply 
+```
+This command creates and starts containers for each service in docker compose format
+
 > _Note: The Application endpoint may not be accessible due to authorization restriction._
 
 ```shell
