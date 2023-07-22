@@ -3,11 +3,10 @@ package document
 import (
 	"fmt"
 	"log"
-	"strconv"
 
 	// db "landate/document/db"
-	config "landate/config"
-	consul "landate/consul"
+	// config "landate/config"
+	// consul "landate/consul"
 	api "landate/document/routes"
 )
 
@@ -20,19 +19,19 @@ const (
 
 func DocumentSVC() {
 
-	svc_port, err := strconv.Atoi(config.GetEnvConfig(envPORT))
-	if err != nil {
-		log.Fatal("Unable to load svc port: ", err)
-	}
-	doc_svc := consul.NewService(svcId, svcName, svcTag, svc_port)
+	// svc_port, err := strconv.Atoi(config.GetEnvConfig(envPORT))
+	// if err != nil {
+	// 	log.Fatal("Unable to load svc port: ", err)
+	// }
+	// doc_svc := consul.NewService(svcId, svcName, svcTag, svc_port)
 
 	// Entry Point to API
-	err = api.Init()
+	err := api.Init()
 	if err != nil {
 		log.Fatal("Unable to start Document Microserivces")
 	} else {
 		fmt.Println("Welcome to Document Microserivces")
 	}
 
-	doc_svc.DeregisterService()
+	// doc_svc.DeregisterService()
 }

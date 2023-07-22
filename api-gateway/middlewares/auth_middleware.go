@@ -17,7 +17,8 @@ func ValidateAPIKey(c *fiber.Ctx) error {
 
 	if authkey != API_ACCESS_KEY {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Invalid API key",
+			"message": "Welcome to Landate API gateway.",
+			"error":   "Need API key to Access. (Invalid API key)",
 		})
 	}
 

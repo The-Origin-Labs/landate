@@ -2,13 +2,13 @@ package db
 
 import (
 	"fmt"
+	"landate/config"
 	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/net/context"
-	config "landate/config"
 )
 
 /*
