@@ -41,21 +41,53 @@ The lack of secure property rights in India is a significant problem, particular
 
 To run this project, you will need to add the following environment variables to your `.env` file
 
-- `API_GATEWAY_PORT`=`"8000"`
-- `STORAGE_SERVICE_PORT`=`"8001"`
-- `AUTH_SERVICE_PORT`=`"8002"`
-- `DOCUMENT_SERVICE_PORT`=`"8003"`
-- `OCR_SERVICE_PORT`=`"8004"`
+```bash
+# API KEY
+API_ACCESS_KEY=
+
+# API GATEWAY CONFIGURATION
+API_GATEWAY_PORT="8000"
+
+# STORAGE SERVICE CONFIGURATION
+STORAGE_SERVICE_PORT="8001"
+
+# AUTHENTICATION SERVICE CONFIGURATION
+AUTH_SERVICE_PORT="8002"
+
+# DOCUMENT SERVICE CONFIGURATION
+DOCUMENT_SERVICE_PORT="8003"
+MONGO_URI=mongodb://<dbuser>:<password>@db:27017
+
+# OCR SERVICE CONFIGURATION
+OCR_SERVICE_PORT="8004"
+
+# BLOCKCHAIN SERVICE CONFIGURATION
+BLOCKCHAIN_SERVICE_PORT="8009"
+
+# NOTIFICATION SERVICE CONFIGURATIONS
+SNS_SERVICE_PORT="8005"
+AWS_BUCKET=
+AWS_KEY=
+AWS_TIMEOUT=
 
 
+# DATABASE CONFIGURATIONS
+POSTGRES_URI=postgresql://<username>:<password>@postgres:5432/<dbname>?sslmode=disable
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=<username>
+DB_PASSWORD=<password>
+DB_NAME=<dbname>
+```
 
 DATABASE CONFIGURATIONS
 
+- `POSTGRES_URI`=`postgresql://<username>:<dbpass>@postgres:5432/<dbname>?sslmode=disable`
 - `DB_HOST`=`localhost`
 - `DB_PORT`=`5432`
-- `DB_USER`=`postgres`
-- `DB_PASSWORD`=`<heimdalkeptsecret>`
-- `DB_NAME`=`heimdb`
+- `DB_USER`=`username`
+- `DB_PASSWORD`=`<dbpass>`
+- `DB_NAME`=`dbname`
 
 ## Setting up development environment
 
