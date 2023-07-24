@@ -96,9 +96,10 @@ services:
     networks:
       - backend
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: siddhantprateek/landate-backend:latest
     container_name: landate-gateway
     environment:
       API_ACCESS_KEY: "all horses do not were spider mask"
