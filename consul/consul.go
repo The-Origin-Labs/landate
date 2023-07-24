@@ -20,7 +20,7 @@ type Service struct {
 
 const (
 	ttl            = time.Second * 8 // time to leave
-	serviceAddress = "127.0.0.1"
+	serviceAddress = "consul:8500"
 )
 
 /*
@@ -39,7 +39,9 @@ servicePort: int - Port number on which the service is running.
 *Service: A pointer to the created Service instance.
 */
 func NewService(serviceID, serviceName, serviceTag string, servicePort int) *Service {
-	client, err := api.NewClient(&api.Config{})
+	client, err := api.NewClient(&api.Config{
+		Address: serviceAddress,
+	})
 	if err != nil {
 		log.Fatal(err)
 	}

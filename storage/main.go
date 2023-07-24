@@ -1,9 +1,10 @@
 package storage
 
 import (
-
-	// config "landate/config"
-	// consul "landate/consul"
+	config "landate/config"
+	consul "landate/consul"
+	"log"
+	"strconv"
 
 	database "landate/storage/database"
 	api "landate/storage/routes"
@@ -20,16 +21,14 @@ func StorageSVC() {
 	// Database connection
 	database.DBConnect()
 
-	// svc_port, err := strconv.Atoi(config.GetEnvConfig(envPORT))
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// storage_svc := consul.NewService(svcId, svcName, svcTag, svc_port)
-	// storage_svc.StartDicovery()
+	svc_port, err := strconv.Atoi(config.GetEnvConfig(envPORT))
+	if err != nil {
+		log.Fatal(err)
+	}
+	storage_svc := consul.NewService(svcId, svcName, svcTag, svc_port)
 
 	// api entrypoint
 	api.StorageService()
-	// storage_svc.DeregisterService()
+	storage_svc.DeregisterService()
 
 }
