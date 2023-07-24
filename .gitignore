@@ -2,3 +2,5 @@
 .docker/PostgreSQL
 .vscode
 node_modules
+
+*.env
