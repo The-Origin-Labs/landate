@@ -1,0 +1,145 @@
+version: '3.4'
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    restart: always
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dev
+      - POSTGRES_DB=heimdb
+    ports:
+      - '5432:5432'
+    networks:
+      - backend
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME:root
+      - MONGO_INITDB_ROOT_PASSWORD:root
+    networks:
+      - backend
+    volumes:
+      - mongo-data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    networks:
+      - backend
+    depends_on:
+      - mongo
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME:root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD:root
+      - ME_CONFIG_MONGODB_URL:mongodb://root:root@mongo:27017/
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_AUTH_BASIC_ENABLED=false
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    networks:
+      - monitoring
+    restart: unless-stopped
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    command: --config.file=/etc/prometheus/prometheus.yaml
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  consul:
+    container_name: consul-badger
+    image: hashicorp/consul:latest
+    restart: always
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    networks:
+      - consul
+    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    hostname: my-rabbit
+    ports:
+      - 15672:15672
+      - 5672:5672
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - backend
+  backend:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: siddhantprateek/landate-backend:latest
+    container_name: landate-gateway
+    environment:
+      API_ACCESS_KEY: "all horses do not were spider mask"
+      API_GATEWAY_PORT: 8000
+      STORAGE_SERVICE_PORT: 8001
+      AUTH_SERVICE_PORT: 8002
+      DOCUMENT_SERVICE_PORT: 8003
+      MONGO_URI: mongodb://root:example@db:27017
+      POSTGRES_URI: postgresql://postgres:dev@postgres:5432/heimdb?sslmode=disable
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: dev
+      DB_NAME: heimdb
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+      - consul
+      - postgres
+    networks:
+      - backend
+      - monitoring
+      - consul
+    restart: always
+
+
+networks:
+  monitoring:
+  consul:
+    driver: bridge
+  backend:
+    driver: bridge
+  
+
+
+volumes:
+  grafana_data:
+  prometheus_data:
+  mongo-data:
+    driver: local
+  postgres-data:
+    driver: local

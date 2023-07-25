@@ -19,8 +19,9 @@ type Service struct {
 }
 
 const (
-	ttl            = time.Second * 8 // time to leave
-	serviceAddress = "consul:8500"
+	ttl = time.Second * 8 // time to leave
+	// serviceAddress = "consul:8500" // for production
+	serviceAddress = "localhost"
 )
 
 /*
@@ -40,7 +41,7 @@ servicePort: int - Port number on which the service is running.
 */
 func NewService(serviceID, serviceName, serviceTag string, servicePort int) *Service {
 	client, err := api.NewClient(&api.Config{
-		Address: serviceAddress,
+		// Address: serviceAddress,
 	})
 	if err != nil {
 		log.Fatal(err)

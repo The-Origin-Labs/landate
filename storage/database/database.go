@@ -28,15 +28,15 @@ func DBConnect() {
 	if err != nil {
 		log.Fatal("Unable to parse port string to int")
 	}
-
-	_ = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai",
+	// dsn: URI for local development
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai",
 		config.GetEnvConfig("DB_HOST"),
 		config.GetEnvConfig("DB_USER"),
 		config.GetEnvConfig("DB_PASSWORD"),
 		config.GetEnvConfig("DB_NAME"),
 		DB_PORT)
-	postgresURI := config.GetEnvConfig("POSTGRES_URI")
-	db, err := gorm.Open(postgres.Open(postgresURI), &gorm.Config{
+	// postgresURI := config.GetEnvConfig("POSTGRES_URI") // for production
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
