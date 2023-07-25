@@ -106,6 +106,19 @@ go mod download
 go run main.go
 ```
 
+## Running the Application Server using Docker
+
+```bash
+docker-compose -f docker-compose.prod.yaml --project-name landate up -d
+```
+
+- For Stopping and Removing Application Server
+
+```bash
+docker-compose -f docker-compose.prod.yaml --project-name landate down
+```
+
+
 ### Setting Up a RabbitMQ (Message Broker) Instance Locally
 
 This command starts a RabbitMQ container named "rabbitmq" with the hostname "my-rabbit". The container's management interface is accessible on port 15672 of the host machine, while the AMQP port is accessible on port 5672.
