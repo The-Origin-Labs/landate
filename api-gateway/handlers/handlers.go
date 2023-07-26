@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"log"
+	"strconv"
 	"strings"
 	"time"
 
@@ -63,7 +64,7 @@ func Gateway() {
 		start := time.Now()
 		err := c.Next()
 		duration := time.Since(start).Seconds()
-		requestDuration.WithLabelValues(c.Method(), c.Path(), string(c.Response().StatusCode())).Observe(duration)
+		requestDuration.WithLabelValues(c.Method(), c.Path(), strconv.Itoa(c.Response().StatusCode())).Observe(duration)
 		return err
 	})
 	recordMetrics()
