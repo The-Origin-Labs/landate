@@ -5,4 +5,4 @@ global:
 scrape_configs:
   - job_name: 'http_request_duration_seconds'
     static_configs:
-      - targets: ['127.0.0.1:8000']
+      - targets: ['127.0.0.1:2222', '127.0.0.1:8000']

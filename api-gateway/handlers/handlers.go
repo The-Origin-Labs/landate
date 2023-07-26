@@ -3,17 +3,38 @@ package handlers
 import (
 	"log"
 	"strings"
+	"time"
 
 	v1Handlers "landate/api-gateway/handlers/versions"
 	"landate/api-gateway/middlewares"
 	route "landate/api-gateway/routes"
 	config "landate/config"
 
-	"github.com/ansrivas/fiberprometheus/v2"
+	// "github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
+
+var (
+	opsProcessed = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "http_request_duration_seconds_2",
+		Help: "The total number of processed events",
+	})
+)
+
+func recordMetrics() {
+	go func() {
+		for {
+			opsProcessed.Inc()
+			time.Sleep(2 * time.Second)
+		}
+	}()
+}
 
 func Gateway() {
 
@@ -22,32 +43,34 @@ func Gateway() {
 	// API Authorization Middleware
 	router.Use(middlewares.ValidateAPIKey)
 
-	promefiber := fiberprometheus.New("http_request_duration_seconds")
-	promefiber.RegisterAt(router, "/metrics")
-	router.Use(promefiber.Middleware)
+	// Previous Feature
+	// promefiber := fiberprometheus.New("http_request_duration_seconds")
+	// promefiber.RegisterAt(router, "/metrics")
+	// router.Use(promefiber.Middleware)
 
 	// Prometheus Configuration
-	// prouter := fiber.New()
-	// requestDuration := prometheus.NewHistogramVec(
-	// 	prometheus.HistogramOpts{
-	// 		Name:    "http_request_duration_seconds",
-	// 		Help:    "Histogram of the request duration.",
-	// 		Buckets: prometheus.DefBuckets,
-	// 	},
-	// 	[]string{"method", "route", "status"},
-	// )
-	// prometheus.MustRegister(requestDuration)
-	// prouter.Use(func(c *fiber.Ctx) error {
-	// 	start := time.Now()
-	// 	err := c.Next()
-	// 	duration := time.Since(start).Seconds()
-	// 	requestDuration.WithLabelValues(c.Method(), c.Path(), string(c.Response().StatusCode())).Observe(duration)
-	// 	return err
-	// })
-	// prouter.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
-	// go func() {
-	// 	log.Fatal(prouter.Listen(":2222"))
-	// }()
+	prouter := fiber.New()
+	requestDuration := prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "http_request_duration_seconds",
+			Help:    "Histogram of the request duration.",
+			Buckets: prometheus.DefBuckets,
+		},
+		[]string{"method", "route", "status"},
+	)
+	prometheus.MustRegister(requestDuration)
+	prouter.Use(func(c *fiber.Ctx) error {
+		start := time.Now()
+		err := c.Next()
+		duration := time.Since(start).Seconds()
+		requestDuration.WithLabelValues(c.Method(), c.Path(), string(c.Response().StatusCode())).Observe(duration)
+		return err
+	})
+	recordMetrics()
+	prouter.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
+	go func() {
+		log.Fatal(prouter.Listen(":2222"))
+	}()
 	// ========== END of PROMETHEUS Middleware ==========
 
 	router.Use(logger.New(logger.Config{
