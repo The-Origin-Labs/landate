@@ -6,8 +6,10 @@
 The lack of secure property rights in India is a significant problem, particularly for the urban poor. Disputes over land ownership slow down real estate transactions, and those without official documents face barriers to accessing financial and government services. Our Application is created to facilitate discussions between individuals and government officials to update land records and establish ownership. We provide education on property rights and offer resources for obtaining legal assistance. By addressing these issues, the project would help promote greater security and stability in property ownership in India.
 </p>
 
+--- 
 
-
+[![The-Origin-Labs](https://circleci.com/gh/The-Origin-Labs/landate.svg?style=svg)](https://circleci.com/gh/The-Origin-Labs/landate)
+![Docker Publish](https://github.com/The-Origin-Labs/landate/actions/workflows/docker-image.yml/badge.svg)[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/The-Origin-Labs/landate.js/graphs/commit-activity)[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](http://shields.io/)
 ## ⚒️ Tech Stack
 
 - `Go`
