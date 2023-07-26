@@ -12,7 +12,6 @@ import (
 	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
 )
 
@@ -20,13 +19,36 @@ func Gateway() {
 
 	router := fiber.New()
 
-	router.Get("/monitor", monitor.New(
-		monitor.Config{
-			Title: "Landate Monitoring",
-		},
-	))
 	// API Authorization Middleware
 	router.Use(middlewares.ValidateAPIKey)
+
+	promefiber := fiberprometheus.New("http_request_duration_seconds")
+	promefiber.RegisterAt(router, "/metrics")
+	router.Use(promefiber.Middleware)
+
+	// Prometheus Configuration
+	// prouter := fiber.New()
+	// requestDuration := prometheus.NewHistogramVec(
+	// 	prometheus.HistogramOpts{
+	// 		Name:    "http_request_duration_seconds",
+	// 		Help:    "Histogram of the request duration.",
+	// 		Buckets: prometheus.DefBuckets,
+	// 	},
+	// 	[]string{"method", "route", "status"},
+	// )
+	// prometheus.MustRegister(requestDuration)
+	// prouter.Use(func(c *fiber.Ctx) error {
+	// 	start := time.Now()
+	// 	err := c.Next()
+	// 	duration := time.Since(start).Seconds()
+	// 	requestDuration.WithLabelValues(c.Method(), c.Path(), string(c.Response().StatusCode())).Observe(duration)
+	// 	return err
+	// })
+	// prouter.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
+	// go func() {
+	// 	log.Fatal(prouter.Listen(":2222"))
+	// }()
+	// ========== END of PROMETHEUS Middleware ==========
 
 	router.Use(logger.New(logger.Config{
 		Format: `${pid} ${locals:requestid} ${status} - ${method} ${path} /n`,
@@ -75,10 +97,6 @@ func Gateway() {
 		return c.SendStatus(404) // => 404 "Not Found"
 	})
 
-	// Prometheus Client middleware
-	prometheus := fiberprometheus.New("api-gateway-traces")
-	prometheus.RegisterAt(router, "/metrics")
-	router.Use(prometheus.Middleware)
 	PORT := config.GetEnvConfig("API_GATEWAY_PORT")
 
 	log.Fatal(router.Listen(":" + PORT))
