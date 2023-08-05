@@ -19,11 +19,11 @@ spec:
         ports:
         - containerPort: 27017
         volumeMounts:
-        - name: mongodb-persistent-data
+        - name: mongodb-pvc
           mountPath: /data/db
   volumeClaimTemplates:
   - metadata:
-      name: mongodb-persistent-data
+      name: mongodb-pvc
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-db
+spec:
+  selector:
+    matchLabels:
+      app: postgres-db
+  serviceName: postgres-db
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+        - name: postgres-db 
+          image: postgres:13-alpine 
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+          - name: postgres-pvc 
+            mountPath: /var/lib/postgresql/data
+          resources:
+            request:
+              cpu: "100m"
+              memory: "512Mi"
+            limits:
+              cpu: "400m"
+              memory: "512Mi"
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-pvc 
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

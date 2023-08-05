@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: landate-api 
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: landate-api 
+  template:
+    metadata:
+      labels:
+        app: landate-api 
+    spec:
+      containers:
+        - name: landate-backend
+          image: siddhantprateek/landate-backend
+          ports:  
+            - containerPort: 8000
+          env:
+            - name: POSTGRES_URI
+            - name: MONGO_URI
+            - name: API_ACCESS_KEY
+            - name: POSTGRES_URI
+          resources:
+            request:
+              cpu: "400m"
+              memory: "512Mi"
+            limits:
+              cpu: "400m"
+              memory: "512Mi"
