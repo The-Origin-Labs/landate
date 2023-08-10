@@ -6,40 +6,22 @@ services:
     restart: always
     container_name: postgres
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=dev
-      - POSTGRES_DB=heimdb
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: heimdb
     ports:
-      - '5432:5432'
+      - ${DB_PORT}:5432
     networks:
       - backend
     volumes:
       - postgres-data:/var/lib/postgresql/data
-  mongo:
-    image: mongo
-    ports:
-      - 27017:27017
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME:root
-      - MONGO_INITDB_ROOT_PASSWORD:root
-    networks:
-      - backend
-    volumes:
-      - mongo-data:/data/db
-
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
-    networks:
-      - backend
-    depends_on:
-      - mongo
-    environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME:root
-      - ME_CONFIG_MONGODB_ADMINPASSWORD:root
-      - ME_CONFIG_MONGODB_URL:mongodb://root:root@mongo:27017/
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+      timeout: 45s
+      interval: 10s
+      retries: 10
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -91,8 +73,8 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
     networks:
       - backend
   backend:
@@ -107,8 +89,9 @@ services:
       STORAGE_SERVICE_PORT: 8001
       AUTH_SERVICE_PORT: 8002
       DOCUMENT_SERVICE_PORT: 8003
-      MONGO_URI: mongodb://root:example@db:27017
-      POSTGRES_URI: postgresql://postgres:dev@postgres:5432/heimdb?sslmode=disable
+      MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@db:27017
+      POSTGRES_URI: postgres://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}?sslmode=disable
+      POSTGRES_DB_URL: postgres://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
       DB_HOST: localhost
       DB_PORT: 5432
       DB_USER: postgres
