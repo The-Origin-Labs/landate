@@ -1,9 +1,11 @@
 package database
 
 import (
-	"fmt"
+	// "fmt"
+
 	"log"
-	"strconv"
+
+	// "strconv"
 
 	config "landate/config"
 	models "landate/storage/models"
@@ -21,22 +23,22 @@ func GetDBInstance() *gorm.DB {
 
 func DBConnect() {
 
-	dbport := config.GetEnvConfig("DB_PORT")
+	// dbport := config.GetEnvConfig("DB_PORT")
 
-	// parsing string to int
-	DB_PORT, err := strconv.ParseInt(dbport, 10, 32)
-	if err != nil {
-		log.Fatal("Unable to parse port string to int")
-	}
-	// dsn: URI for local development
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai",
-		config.GetEnvConfig("DB_HOST"),
-		config.GetEnvConfig("DB_USER"),
-		config.GetEnvConfig("DB_PASSWORD"),
-		config.GetEnvConfig("DB_NAME"),
-		DB_PORT)
-	// postgresURI := config.GetEnvConfig("POSTGRES_URI") // for production
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	// // parsing string to int
+	// DB_PORT, err := strconv.ParseInt(dbport, 10, 32)
+	// if err != nil {
+	// 	log.Fatal("Unable to parse port string to int")
+	// }
+	// // dsn: URI for local development
+	// dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai",
+	// 	config.GetEnvConfig("DB_HOST"),
+	// 	config.GetEnvConfig("DB_USER"),
+	// 	config.GetEnvConfig("DB_PASSWORD"),
+	// 	config.GetEnvConfig("DB_NAME"),
+	// 	DB_PORT)
+	postgresURI := config.GetEnvConfig("POSTGRES_URI") // for production
+	db, err := gorm.Open(postgres.Open(postgresURI), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {

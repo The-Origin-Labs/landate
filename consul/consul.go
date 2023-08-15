@@ -19,9 +19,9 @@ type Service struct {
 }
 
 var (
-	ttl = time.Second * 8 // time to leave
-	// serviceAddress = "consul:8500" // for production
-	serviceAddress = "localhost"
+	ttl            = time.Second * 8 // time to leave
+	serviceAddress = "consul:8500"   // for production
+	// serviceAddress = "localhost"
 )
 
 /*

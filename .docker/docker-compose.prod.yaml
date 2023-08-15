@@ -80,12 +80,13 @@ services:
       AUTH_SERVICE_PORT: 8002
       DOCUMENT_SERVICE_PORT: 8003
       MONGO_URI: mongodb://root:example@db:27017
-      POSTGRES_URI: postgresql://postgres:dev@postgres:5432/heimdb?sslmode=disable
-      DB_HOST: localhost
+      CONSUL_ADDR: consul:8500
+      DB_HOST: postgres
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: dev
-      DB_NAME: heimdb
+      DB_NAME: postgres
+      POSTGRES_URI: postgresql://postgres:dev@postgres:5432/postgres?sslmode=disable
     ports:
       - 8000:8000
     depends_on:

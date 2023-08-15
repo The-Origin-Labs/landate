@@ -6,22 +6,15 @@ services:
     restart: always
     container_name: postgres
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: heimdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dev
+      - POSTGRES_DB=heimdb
     ports:
-      - ${DB_PORT}:5432
+      - '5432:5432'
     networks:
       - backend
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
-      timeout: 45s
-      interval: 10s
-      retries: 10
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -73,15 +66,14 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     networks:
       - backend
   backend:
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
-    image: siddhantprateek/landate-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: landate-gateway
     environment:
       API_ACCESS_KEY: "all horses do not were spider mask"
@@ -89,14 +81,14 @@ services:
       STORAGE_SERVICE_PORT: 8001
       AUTH_SERVICE_PORT: 8002
       DOCUMENT_SERVICE_PORT: 8003
-      MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@db:27017
-      POSTGRES_URI: postgres://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}?sslmode=disable
-      POSTGRES_DB_URL: postgres://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
-      DB_HOST: localhost
+      MONGO_URI: mongodb://root:example@db:27017
+      CONSUL_ADDR: consul:8500
+      DB_HOST: postgres
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: dev
-      DB_NAME: heimdb
+      DB_NAME: postgres
+      POSTGRES_URI: postgresql://postgres:dev@postgres:5432/postgres?sslmode=disable
     ports:
       - 8000:8000
     depends_on:
@@ -109,27 +101,6 @@ services:
       - consul
     restart: always
 
-  jaeger:
-    container_name: jaeger
-    image: jaegertracing/all-in-one:1.47
-    environment:
-      - COLLECTOR_OTLP_ENABLED=true
-      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
-    ports:
-      - 6831:6831/udp
-      - 6832:6832/udp
-      - 5778:5778
-      - 16686:16686
-      - 4317:4317
-      - 4318:4318
-      - 14250:14250
-      - 14268:14268
-      - 14269:14269
-      - 9411:9411
-    networks:
-      - backend
-    restart: always
-
 networks:
   monitoring:
   consul:
@@ -137,8 +108,6 @@ networks:
   backend:
     driver: bridge
   
-
-
 volumes:
   grafana_data:
   prometheus_data:

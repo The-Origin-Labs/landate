@@ -14,9 +14,5 @@ func GetEnvConfig(VARIABLE_NAME string) string {
 	}
 
 	ENV_VAR := os.Getenv(VARIABLE_NAME)
-	if ENV_VAR == "" {
-		fmt.Printf("Unable to load %s from .env file", VARIABLE_NAME)
-	}
-
 	return ENV_VAR
 }
