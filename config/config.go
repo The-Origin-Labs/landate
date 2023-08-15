@@ -8,7 +8,7 @@ import (
 )
 
 func GetEnvConfig(VARIABLE_NAME string) string {
-	err := godotenv.Load(".dev.env") // for production leave it empty
+	err := godotenv.Load()
 	if err != nil {
 		fmt.Println("Error loading .env file:", err)
 	}
