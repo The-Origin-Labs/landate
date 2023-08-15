@@ -183,6 +183,10 @@ spec:
         .
 ```
 
+## Grafana Dashboard
+
+![](./assets/grafana-dash.png)
+
 **Create MongoDB Service**
 
 ```shell
