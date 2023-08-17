@@ -28,6 +28,9 @@ The lack of secure property rights in India is a significant problem, particular
 ## Architecture
 ![PolyrootArch](./assets/architecture.png)
 
+## Deployment Infrastructure
+![DeployInfra](./assets/svc-diagram.png)
+
 ### Github Actions
 
 ![](./assets/github-actions-image.png)
