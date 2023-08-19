@@ -1,0 +1,26 @@
+name: Greetings
+
+on: [pull_request_target, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: |
+            Thank you for creating an issue in the Pheno Application repository! 🚀
+            Our team will review the issue and respond to you as soon as possible. We appreciate your contribution to improving the application and making it even better.
+            Feel free to explore other parts of the repository, contribute to ongoing discussions, or even consider submitting a pull request if you're up for it! We value your involvement and look forward to working together to address any concerns you might have.
+            Happy coding! 💻✨
+        pr-message: |
+          Congratulations on submitting a pull request to the Pheno Application repository! 🎉
+          Our team will review your changes and provide feedback or merge it if everything looks good. 
+          Your contributions help us enhance the application and provide a better experience for our users.
+          Feel free to engage with the community, join discussions, and explore other areas of the repository. 
+          Your effort is valuable, and we're excited to have you as part of our development journey.
+          Keep up the great work and keep coding! 💪💼
