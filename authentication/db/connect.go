@@ -16,7 +16,7 @@ func GetDBInstance() *gorm.DB {
 	return DB
 }
 
-func PGConnect() {
+func PGConnect() error {
 	postgresURI := config.GetEnvConfig("POSTGRES_URI")
 	db, err := gorm.Open(postgres.Open(postgresURI), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
@@ -29,8 +29,8 @@ func PGConnect() {
 
 	// Migrate the schema to Database
 	log.Println("Running migrations...")
-	db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(&models.User{})
 
 	DB = db
-
+	return err
 }
