@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  auth-svc:
+    container_name: auth-svc
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      AUTH_SERVICE_PORT: 8002
+      POSTGRES_URI: postgresql://postgres:authdev@postgres:5432/userdb?sslmode=disable
+    depends_on:
+      - postgres
+      - consul
+    networks:
+      - authnet
+    ports:
+      - 8002:8002
+  postgres:
+    image: postgres:13-alpine
+    restart: always
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=authdev
+      - POSTGRES_DB=userdb
+    ports:
+      - 5432:5432
+    networks:
+      - authnet
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  consul:
+    container_name: consul-badger
+    image: hashicorp/consul:latest
+    restart: always
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    networks:
+      - authnet
+    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+  
+
+volumes:
+  pgdata:
+
+networks:
+  authnet:
