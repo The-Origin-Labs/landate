@@ -18,7 +18,7 @@ func Init(ctx *fiber.Ctx) error {
 }
 
 // @Desp: Create User
-// @Route:
+// @Route: /auth/user
 // @Method: POST
 func CreateUser(ctx *fiber.Ctx) error {
 	user := new(models.User)
@@ -39,7 +39,7 @@ func CreateUser(ctx *fiber.Ctx) error {
 }
 
 // @Desp: Get User by Id
-// @Route: /auth/user
+// @Route: /auth/user/:id
 // @Method: GET
 func RetrieveUser(ctx *fiber.Ctx) error {
 	user := models.User{}
