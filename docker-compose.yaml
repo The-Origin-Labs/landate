@@ -70,6 +70,27 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     networks:
       - backend
+  
+  cache:
+    image: redis/redis-stack:latest
+    container_name: redis
+    environment:
+      - REDIS_ARGS="--requirepass redis-stack"
+    ports:
+      - 6379:6379
+      - 8001:8001
+    volumes:
+      - redis-cache:/data
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.30
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - 16686:16686
+    networks:
+      - backend
+      
   backend:
     build:
       context: .
@@ -109,6 +130,7 @@ networks:
     driver: bridge
   
 volumes:
+  redis-cache:
   grafana_data:
   prometheus_data:
   mongo-data:
