@@ -5,7 +5,7 @@ services:
     container_name: auth-svc
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.auth
     environment:
       AUTH_SERVICE_PORT: 8002
       POSTGRES_URI: postgresql://postgres:authdev@postgres:5432/userdb?sslmode=disable
@@ -16,9 +16,9 @@ services:
       - authnet
     ports:
       - 8002:8002
+
   postgres:
     image: postgres:13-alpine
-    restart: always
     container_name: postgres
     environment:
       - POSTGRES_USER=postgres
@@ -30,6 +30,8 @@ services:
       - authnet
     volumes:
       - pgdata:/var/lib/postgresql/data
+    restart: always
+
   consul:
     container_name: consul-badger
     image: hashicorp/consul:latest
