@@ -1,12 +1,39 @@
 package routes
 
 import (
+	"context"
+	"fmt"
 	handler "landate/authentication/handlers"
 	config "landate/config"
+	"net/http"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/shareed2k/fiber_tracing"
+	adaptor "github.com/gofiber/fiber/v2/middleware/adaptor"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 )
+
+var tracer = otel.Tracer("landate/authentication/routes")
+
+// sleepy mocks work that your application does.
+func sleepy(ctx context.Context) {
+	_, span := tracer.Start(ctx, "sleep")
+	defer span.End()
+
+	sleepTime := 1 * time.Second
+	time.Sleep(sleepTime)
+	span.SetAttributes(attribute.Int("sleep.duration", int(sleepTime)))
+}
+
+// httpHandler is an HTTP handler function that is going to be instrumented.
+func httpHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, World! I am instrumented automatically!")
+	ctx := r.Context()
+	sleepy(ctx)
+}
 
 func AuthRoutes(router *fiber.App) {
 	router.Get("/", handler.Init)
@@ -22,9 +49,11 @@ func AuthRoutes(router *fiber.App) {
 func Init() error {
 
 	app := fiber.New()
+	app.Use(logger.New())
 
-	closer := fiber_tracing.NewWithJaegerTracer(app)
-	defer closer.Close()
+	handler := http.HandlerFunc(httpHandler)
+	wrappedHandler := otelhttp.NewHandler(handler, "hello-instrumented")
+	app.Get("/api/traces", adaptor.HTTPHandler(wrappedHandler))
 
 	AuthRoutes(app)
 

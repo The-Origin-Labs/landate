@@ -9,7 +9,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
+	// "gorm.io/gorm/logger"
 )
 
 var DB *gorm.DB
@@ -34,13 +34,13 @@ func PGConnect() error {
 		DB_PORT)
 	// postgresURI := config.GetEnvConfig("POSTGRES_URI")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		// Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		log.Fatal("Failed to connect to Database.", err)
 	}
 	log.Println("Connected ✅")
-	db.Logger = logger.Default.LogMode(logger.Info)
+	// db.Logger = logger.Default.LogMode(logger.Info)
 
 	// Migrate the schema to Database
 	log.Println("Running migrations...")
