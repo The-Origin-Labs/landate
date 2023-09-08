@@ -5,9 +5,11 @@ import (
 	"fmt"
 	handler "landate/authentication/handlers"
 	config "landate/config"
+	"landate/internals/tracing"
 	"net/http"
 	"time"
 
+	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
 	adaptor "github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -47,12 +49,14 @@ func AuthRoutes(router *fiber.App) {
 }
 
 func Init() error {
-
+	_ = tracing.InitTracer()
 	app := fiber.New()
+
 	app.Use(logger.New())
+	app.Use(otelfiber.Middleware())
 
 	handler := http.HandlerFunc(httpHandler)
-	wrappedHandler := otelhttp.NewHandler(handler, "hello-instrumented")
+	wrappedHandler := otelhttp.NewHandler(handler, "otel-instrumented")
 	app.Get("/api/traces", adaptor.HTTPHandler(wrappedHandler))
 
 	AuthRoutes(app)
